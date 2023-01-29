@@ -1,0 +1,126 @@
+Henrique da Rosa Lumertz
+
+--- Classe menu ---
+
+package aula_atividadefinal;
+
+import java.util.Scanner;
+
+public class menu {
+
+	public static void main(String[] args) {
+
+		
+		Scanner leia = new Scanner(System.in);
+		
+		cadastros cad = new cadastros();
+		consultas con = new consultas();
+		
+		//Declaração de variáveis
+		int op = 0;
+		
+		while (op != 3) {
+			System.out.println("* * * * Gestão Escolar * * * *");
+			System.out.println("1 - Cadastrar matrícula");
+			System.out.println("2 - Consultar matrícula");
+			System.out.println("3 - Sair"); 
+			op = leia.nextInt();
+			
+			if (op == 1) {
+				cad.cadaluno();
+			}
+			if (op == 2) {
+				con.consaluno();
+			}
+			if (op == 3) {
+				System.out.print("Sistema encerrado!");
+				break;
+			}
+		}
+		
+	}
+
+}
+
+--- Classe cadastros ---
+
+package aula_atividadefinal;
+
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.Scanner;
+
+public class cadastros {
+	
+	File arquivo = new File("c:/gestaoescolar/matriculas.txt");	
+	
+	Scanner leia = new Scanner(System.in);
+	
+	//Declaração de variáveis
+	String nome_a = "";
+	int idade_a = 0;
+	
+	//Cadastra um dado
+	public void cadaluno() {
+		//Cria o arquivo caso ele não exista
+		try {
+			if (!arquivo.exists()) {
+				arquivo.createNewFile();
+			}
+		
+		System.out.println("Insira o nome do aluno: ");
+		String nome_a = leia.next();
+		System.out.println("Insira a idade do aluno: ");
+		int idade_a = leia.nextInt();
+		
+		//Definição do buffer e do writer
+		FileWriter fw = new FileWriter(arquivo, true);
+		BufferedWriter bw = new BufferedWriter(fw);
+		
+		bw.write("Nome do aluno: " + nome_a);
+		bw.newLine();
+		bw.write("Idade do aluno: " + idade_a);
+		bw.newLine();
+		bw.close();
+		fw.close();
+		
+	} catch (IOException ex) {
+		ex.printStackTrace();
+	}
+	}
+}
+
+--- Classe consultas ---
+
+package aula_atividadefinal;
+
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+
+public class consultas {
+	
+	File arquivo = new File("c:/gestaoescolar/matriculas.txt");	
+	
+	//Faz a consulta dos dados
+	public void consaluno() {
+		try {
+		
+		FileReader fr = new FileReader(arquivo);
+		BufferedReader br = new BufferedReader(fr);
+		
+		while (br.ready()) {
+			String linha = br.readLine();
+			System.out.println(linha);
+		}
+			br.close();
+			fr.close();
+			
+	}catch (IOException ex) {
+		ex.printStackTrace();
+	} 
+}
+}
